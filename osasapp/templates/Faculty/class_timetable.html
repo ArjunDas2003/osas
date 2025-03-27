@@ -4,25 +4,17 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Faculty Registration</title>
+    <title>Faculty Timetable</title>
     
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Roboto+Condensed:wght@100..900&display=swap');
-        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400..900&display=swap');
 
         body {
             margin: 0;
             font-family: Arial, sans-serif;
             background-color: #f6f9ff;
             color: #333;
-        }
-
-        .container {
             display: flex;
-            height: 100vh;
-            flex-direction: column;
-            justify-content: space-between;
-            width: 100%;
         }
 
         /* Sidebar */
@@ -32,9 +24,12 @@
             width: 13%;
             padding: 20px;
             box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
-            padding-top: 10px;
-            height: 100%;
+            height: 100vh;
             position: fixed;
+            left: 0;
+            top: 0;
+            display: flex;
+            flex-direction: column;
         }
 
         .logo {
@@ -44,22 +39,21 @@
             font-family: "Roboto Condensed", serif;
         }
 
-        .menu a {
-            text-decoration: none;
-            color: #6a0dad;
-        }
-
         .menu {
             list-style: none;
             padding: 0;
             margin: 0;
         }
 
+        .menu a {
+            text-decoration: none;
+            color: #6a0dad;
+        }
+
         .menu-item {
             margin: 15px 0;
             cursor: pointer;
             padding: 10px;
-            padding-left: 30px;
             border-radius: 5px;
             transition: background-color 0.3s;
             color: #6a0dad;
@@ -76,11 +70,9 @@
 
         /* Main Content */
         .main-content {
-            display: flex;
-            flex-direction: column;
+            flex-grow: 1;
             padding: 20px;
-            width: 80%;
-            margin-left: auto;
+            margin-left: 200px;
         }
 
         .header {
@@ -88,47 +80,47 @@
             justify-content: space-between;
             align-items: center;
             color: #6a0dad;
-            padding-left: 5px;
             font-family: "Roboto Condensed", serif;
-            font-size: 20px;
+            font-size: 24px;
+            margin-bottom: 15px;
+            padding-left: 5%;
         }
-
-        .content {
-            background: white;
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-            margin-bottom: 20px;
-        }
-
-
-        
-
-        
-        .btn {
+        .header button {
+            padding: 8px 15px;
+            font-size: 14px;
+            border: none;
             background-color: #6a0dad;
             color: white;
-            border: none;
-            padding: 10px 15px;
             border-radius: 5px;
             cursor: pointer;
             transition: background-color 0.3s;
         }
 
-        .btn:hover {
+        .header button:hover {
             background-color: #7e24d2;
         }
 
+        /* Style for the new class selection dropdown */
+        .class-select {
+            padding: 8px 15px;
+            font-size: 14px;
+            border: 2px solid #6a0dad;
+            background-color: #ffffff;
+            color: rgb(0, 0, 0);
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .class-select:focus {
+            outline: none;
+        }
 
-        .section{
-            margin-top: 5%;
+        .section {
             display: flex;
             flex-direction: column;
             gap: 10px;
             width: 100%;
-            min-width: 1200px;
-            max-width: 1200px;
-            align-self: center;
+            max-width: 1000px;
+            margin: 0 auto;
         }
 
         /* Row */
@@ -138,7 +130,7 @@
             width: 100%;
         }
 
-        /* Day Column (Same size as subjects) */
+        /* Day Column */
         .day {
             width: 130px;
             height: 60px;
@@ -168,65 +160,78 @@
             justify-content: center;
         }
 
-        /* Interval Gaps */
+        /* Gaps */
         .gap {
             flex: 0.2;
         }
 
         /* Friday Adjustment */
         .large-box {
-            flex: 1.76;  /* Stretch last 2 subject boxes */
+            flex: 1.76;
         }
-        #day1{
+        #day1 {
             border-top-left-radius: 18px;
         }
-        #day5{
+        #day5 {
             border-bottom-left-radius: 18px;
         }
-        #sub1{
+        #sub1 {
             border-top-right-radius: 18px;
         }
-        #sub2{
+        #sub2 {
             border-bottom-right-radius: 18px;
         }
+
     </style>
 </head>
 <body>
-    <div class="container">
-        <aside class="sidebar">
-            <h1 class="logo">OSAS</h1>
-            <ul class="menu">
-                <a href="{% url 'profilestu' %}"><li class="menu-item">Profile</li></a>
-                <li class="menu-item active">Time Table </li>
-                <a href="{% url 'stuattendance' %}"><li class="menu-item">Attendance</li></a>
-                <a href="{% url 'logout' %}"><li class="menu-item">Logout</li></a>
-            </ul>
-        </aside>
+    <aside class="sidebar">
+        <h1 class="logo">OSAS</h1>
+        <ul class="menu">
+            <a href="{% url 'profilestu' %}"><li class="menu-item">Profile</li></a>
+            <li class="menu-item active">Time Table</li>
+            <a href="{% url 'facattendance' %}"><li class="menu-item">Attendance</li></a>
+            <a href="{% url 'logout' %}"><li class="menu-item">Logout</li></a>
+        </ul>
+    </aside>
+    
+    <main class="main-content">
+        <header class="header">
+            <form method="GET" action="{% url 'class_timetable' %}">
+                <select class="class-select" name="class_id" onchange="this.form.submit()">
+                    <option value="">Select Class</option>
+                    {% for class in classes %}
+                    <option value="{{ class.id }}" {% if selected_class and selected_class.id == class.id %}selected{% endif %}>
+                        {{ class.department.code }} Sem {{ class.semester.number }} {{ class.division.name }}
+                    </option>
+                    {% endfor %}
+                </select>
+            </form>
+            <h2>Class Timetable</h2>
+            <a href="{% url 'factimetable' %}">
+                <button>Go back</button>
+            </a>
+        </header>
         
-        <main class="main-content">
-            <header class="header">
-                <h2>Your Timetable</h2>
-                <div class="user-profile">
-                    
-                </div>
-            </header>
-            
-            <div class="section">
-                {% for day, subjects in timetable_data.items %}
+        <div class="section">
+            {% if timetable_data %}
+                {% for day, periods in timetable_data.items %}
                 <div class="row">
                     <div class="day">{{ day }}</div>
-                    {% for subject in subjects %}
+                    {% for period in periods %}
                     <div class="subject">
-                        {{ subject.subject_code }} <br>
-                        {{ subject.subject_name }} <br>
-                        <small>{{ subject.faculty }}</small>
+                        {{ period.subject_code }} - {{ period.faculty }}
                     </div>
+                    {% empty %}
+                    <div class="subject">No Class</div>
                     {% endfor %}
                 </div>
                 {% endfor %}
-            </div>
-        </main>
-    </div>
+            {% else %}
+                <p style="text-align:center; font-weight:bold;">Select a class to view its timetable.</p>
+            {% endif %}
+        </div>
+        
+    </main>
 </body>
-
 </html>

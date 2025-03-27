@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Faculty Registration</title>
+    <title>Add Subjects</title>
     
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Roboto+Condensed:wght@100..900&display=swap');
@@ -227,16 +227,16 @@
             <h1 class="logo">OSAS</h1>
             <ul class="menu">
                 <a href="{% url 'faculty' %}"><li class="menu-item">Faculty Registration</li></a>
-                <li class="menu-item active">Subject List</li>
-                <a href="{% url 'student' %}"><li class="menu-item">Students List</li></a>
-                <a href="{% url 'timetable' %}"><li class="menu-item">Time Table</li></a>
+                <li class="menu-item active">Add Subjects</li>
+                <a href="{% url 'student' %}"><li class="menu-item">Students Registration</li></a>
+                <a href="{% url 'timetable' %}"><li class="menu-item">Add Time Table</li></a>
                 <a href="{% url 'logout' %}"><li class="menu-item">Logout</li></a>
             </ul>
         </aside>
         
         <main class="main-content">
             <header class="header">
-                <h2>Subject List</h2>
+                <h2>Add Subject</h2>
                 <div class="user-profile">
                     <span>Hi, {{ request.session.full_name }}</span>
                 </div>
@@ -259,26 +259,30 @@
                         <tr>
                             <th>Subject</th>
                             <th>Department</th>
+                            <th>Subject Code</th>
                             <th>Semester</th>
                             <th>Faculty IDs</th>
                         </tr>
                         <tr>
-                            <td>Math</td>
+                            <td>Data Structures</td>
+                            <td>CS101</td>
                             <td>CSE</td>
-                            <td>3</td>
-                            <td>FAC001, FAC002</td>
+                            <td>8</td>
+                            <td>FAC005, FAC002</td>
                         </tr>
                         <tr>
-                            <td>Physics</td>
+                            <td>Algorithms</td>
+                            <td>CS102</td>
                             <td>ER</td>
-                            <td>2</td>
-                            <td>FAC003</td>
+                            <td>3</td>
+                            <td>FAC004</td>
                         </tr>
                         <tr>
-                            <td>DBMS</td>
+                            <td>Operating Systems</td>
+                            <td>CS103</td>
                             <td>CSE</td>
-                            <td>4</td>
-                            <td>FAC004, FAC005</td>
+                            <td>7</td>
+                            <td>FAC001</td>
                         </tr>
                     </table>
                     <p><a href="{% static 'sample_subjects.xlsx' %}" download>Download Sample Excel File</a></p>

@@ -121,6 +121,7 @@
 
 
         .section{
+            margin-top: 6%;
             display: flex;
             flex-direction: row;
             height: 100%;
@@ -184,8 +185,8 @@
             <h1 class="logo">OSAS</h1>
             <ul class="menu">
                 <li class="menu-item active">Profile</li>
-                <a href="{% url 'stutimetable' %}"><li class="menu-item">Time Table</li></a>
-                <a href="{% url 'stuattendance' %}"><li class="menu-item">Attendance</li></a>
+                <a href="{% url 'factimetable' %}"><li class="menu-item">Time Table</li></a>
+                <a href="{% url 'facattendance' %}"><li class="menu-item">Attendance</li></a>
                 <a href="{% url 'logout' %}"><li class="menu-item">Logout</li></a>
             </ul>
         </aside>
@@ -194,7 +195,151 @@
             <header class="header">
                 <h2>Your Profile</h2>
                 <div class="user-profile">
-                    <button class="btn" id="duty-leave">Duty leave</button>
+                    
+                <button onclick="openDutyLeaveModal()" class="btn-duty-leave">Apply Duty Leave</button>
+                <div id="dutyLeaveModal" class="modal">
+                    <div class="modal-content">
+                        <span class="close" onclick="closeDutyLeaveModal()">&times;</span>
+                        <h2>Apply for Duty Leave</h2>
+                        <form method="POST" action="{% url 'apply_duty_leave' %}">
+                            {% csrf_token %}
+                            <label>Select Leave Periods:</label>
+                            
+                            <div class="checkbox-container">
+                                {% for period in faculty_timetable_today %}
+                                    <label class="checkbox-label">
+                                        <input type="checkbox" name="leave_periods" value="{{ period.id }}"> 
+                                        Period {{ period.period }} - {{ period.subject.name }} ({{ period.class_info }})
+                                    </label>
+                                {% empty %}
+                                    <p>No classes scheduled today.</p>
+                                {% endfor %}
+                            </div>
+                            <button type="submit" class="btn-submit">Submit</button>
+                        </form>
+                    </div>
+                </div>
+
+                <!-- ✅ CSS for Duty Leave Modal and Button -->
+                <style>
+                    .modal {
+                        display: none;
+                        position: fixed;
+                        z-index: 1000;
+                        left: 0;
+                        top: 0;
+                        width: 100%;
+                        height: 100%;
+                        background-color: rgba(0, 0, 0, 0.5);
+                        
+                        align-items: center;
+                        justify-content: center;
+                    }
+
+                    .modal-content {
+                        background-color: white;
+                        padding: 20px;
+                        width: 350px;
+                        border-radius: 10px;
+                        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+                        text-align: center;
+                        position: relative;
+                    }
+
+                    .close {
+                        position: absolute;
+                        right: 15px;
+                        top: 10px;
+                        font-size: 20px;
+                        font-weight: bold;
+                        cursor: pointer;
+                    }
+
+                    .modal-content {
+                        background-color: white;
+                        padding: 20px;
+                        width: 60%;  /* ✅ Make modal fill about 60% of screen */
+                        max-width: 600px; /* Prevent it from getting too wide on larger screens */
+                        border-radius: 10px;
+                        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+                        text-align: center;
+                        position: relative;
+                    }
+                    
+                    .checkbox-container {
+                        display: flex;
+                        flex-direction: column; /* ✅ Display periods in column */
+                        gap: 10px; /* Add spacing between checkboxes */
+                        text-align: left;
+                        margin: 20px auto;
+                        width: 80%; /* ✅ Make it fill most of the modal width */
+                    }
+                    
+                    .checkbox-label {
+                        display: flex;
+                        align-items: center;
+                        gap: 10px;
+                        background: #f9f9f9; /* Light background for better visibility */
+                        padding: 10px;
+                        border-radius: 5px;
+                        border: 1px solid #ddd;
+                        transition: background 0.3s;
+                    }
+                    
+                    .checkbox-label:hover {
+                        background: #e8dff7; /* Subtle hover effect */
+                    }
+                    
+                    input[type="checkbox"] {
+                        transform: scale(1.2); /* Make checkboxes slightly larger */
+                        cursor: pointer;
+                    }
+                    
+
+                    .btn-submit {
+                        background-color: #6a0dad;
+                        color: white;
+                        padding: 10px 15px;
+                        border: none;
+                        border-radius: 5px;
+                        margin-top: 15px;
+                        cursor: pointer;
+                        transition: background-color 0.3s;
+                    }
+
+                    .btn-submit:hover {
+                        background-color: #7e24d2;
+                    }
+
+                    .btn-duty-leave {
+                        background-color: #ab41f9;
+                        color: white;
+                        padding: 10px 15px;
+                        border: none;
+                        border-radius: 5px;
+                        margin-top: 15px;
+                        cursor: pointer;
+                        transition: background-color 0.3s;
+                    }
+
+                    .btn-duty-leave:hover {
+                        background-color: #7e24d2;
+                    }
+                </style>
+
+                <!-- ✅ JavaScript to Open & Close Modal -->
+                <script>
+                    function openDutyLeaveModal() {
+                        document.getElementById('dutyLeaveModal').style.display = 'flex';
+                    }
+
+                    function closeDutyLeaveModal() {
+                        document.getElementById('dutyLeaveModal').style.display = 'none';
+                    }
+                    
+                </script>
+
+
                 </div>
             </header>
             

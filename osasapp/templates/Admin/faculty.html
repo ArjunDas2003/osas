@@ -183,7 +183,49 @@
         .add-button:hover {
             background-color: #7e24d2;
         }
-        
+        .section{
+            display: flex;
+            flex-direction: row;
+            gap: 20px;
+        }
+        .left-section {
+            width: 50%;
+        }
+
+        .right-section {
+            width: 40%;
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+        }
+        th, td {
+            padding: 8px;
+            border: 1px solid #ddd;
+            text-align: center;
+        }
+        th {
+            background-color: #6a0dad;
+            color: white;
+        }
+
+        .download-link {
+            display: block;
+            margin-top: 15px;
+            color: #6a0dad;
+            text-decoration: none;
+            font-size: 16px;
+        }
+
+        .download-link:hover {
+            text-decoration: underline;
+        }
 
     </style>
 </head>
@@ -193,9 +235,9 @@
             <h1 class="logo">OSAS</h1>
             <ul class="menu">
                 <li class="menu-item active">Faculty Registration</li>
-                <a href="{% url 'subject' %}"><li class="menu-item">Subject List</li></a>
-                <a href="{% url 'student' %}"><li class="menu-item">Students List</li></a>
-                <a href="{% url 'timetable' %}"><li class="menu-item">Time Table</li></a>
+                <a href="{% url 'subject' %}"><li class="menu-item">Add Subjects</li></a>
+                <a href="{% url 'student' %}"><li class="menu-item">Students Registration</li></a>
+                <a href="{% url 'timetable' %}"><li class="menu-item">Add Time Table</li></a>
                 <a href="{% url 'logout' %}"><li class="menu-item">Logout</li></a>
             </ul>
         </aside>
@@ -208,25 +250,49 @@
                 </div>
             </header>
 
-            <!-- Department-wise Upload Sections -->
-            {% for department in departments %}
-<section class="content">
-    <form method="POST" enctype="multipart/form-data" action="{% url 'upload_faculty' %}">
-        {% csrf_token %}
-        <div class="form-group">
-            <div class="dropdown">Department: {{ department.name }}</div>
-            <input type="hidden" name="department" value="{{ department.code }}">
-            <input type="file" id="faculty_file_{{ department.code }}" name="faculty_file" accept=".csv, .xlsx" style="display: none;">
-            <label for="faculty_file_{{ department.code }}" class="custom-file-upload">Add Faculties</label>
-            <span id="selected-file-name-{{ department.code }}" style="margin-left: 10px; font-size: 16px; color: #6a0dad;"></span>
-        </div>
-        <div class="form-group">
-            <button type="submit" class="btn">Submit</button>
-        </div>
-    </form>
-</section>
-{% endfor %}
-
+            <div class="section">
+                <div class="left-section">
+                    {% for department in departments %}
+                    <section class="content">
+                        <form method="POST" enctype="multipart/form-data" action="{% url 'upload_faculty' %}">
+                            {% csrf_token %}
+                            <div class="form-group">
+                                <div class="dropdown">Department: {{ department.name }}</div>
+                                <input type="hidden" name="department" value="{{ department.code }}">
+                                <input type="file" id="faculty_file_{{ department.code }}" name="faculty_file" accept=".csv, .xlsx" style="display: none;">
+                                <label for="faculty_file_{{ department.code }}" class="custom-file-upload">Add Faculties</label>
+                            </div>
+                            <div class="form-group">
+                                <button type="submit" class="btn">Submit</button>
+                            </div>
+                        </form>
+                    </section>
+                    {% endfor %}
+                </div>
+    
+                <div class="right-section">
+                    <h3>Sample Timetable</h3>
+                    <table>
+                        <tr>
+                            <th>Day</th>
+                            <th>Period</th>
+                            <th>Subject Code</th>
+                            <th>Faculty ID</th>
+                        </tr>
+                        <tr><td>Monday</td><td>1</td><td>CS107</td><td>FAC018</td></tr>
+                        <tr><td>Monday</td><td>2</td><td>CS107</td><td>FAC018</td></tr>
+                        <tr><td>Monday</td><td>3</td><td>CS107</td><td>FAC018</td></tr>
+                        <tr><td>Monday</td><td>4</td><td>CS107</td><td>FAC018</td></tr>
+                        <tr><td>Monday</td><td>5</td><td>CS107</td><td>FAC018</td></tr>
+                        <tr><td>Monday</td><td>6</td><td>CS107</td><td>FAC018</td></tr>
+                        <tr><td>Monday</td><td>7</td><td>CS107</td><td>FAC018</td></tr>
+                        <tr><td>Tuesday</td><td>1</td><td>CS107</td><td>FAC018</td></tr>
+                        <tr><td>Tuesday</td><td>2</td><td>CS107</td><td>FAC018</td></tr>
+                        <tr><td>Tuesday</td><td>3</td><td>CS107</td><td>FAC018</td></tr>
+                    </table>
+                    <a href="{% static 'timetable_sample.xlsx' %}" class="download-link" download>Download Sample Timetable</a>
+                </div>
+            </div>
 
         </main>
     </div>

@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Faculty Registration</title>
+    <title>Student Registration</title>
     
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Roboto+Condensed:wght@100..900&display=swap');
@@ -91,9 +91,11 @@
             padding-left: 5px;
             font-family: "Roboto Condensed", serif;
             font-size: 20px;
+            margin-bottom: 5%;
         }
 
         .content {
+            
             background: white;
             padding: 20px;
             border-radius: 10px;
@@ -102,6 +104,7 @@
         }
 
         .form-group {
+
             display: flex;
             align-items: center;
             gap: 10px;
@@ -233,16 +236,16 @@
             <h1 class="logo">OSAS</h1>
             <ul class="menu">
                 <a href="{% url 'faculty' %}"><li class="menu-item">Faculty Registration</li></a>
-                <a href="{% url 'subject' %}"><li class="menu-item">Subject List</li></a>
-                <li class="menu-item active">Student List</li>
-                <a href="{% url 'timetable' %}"><li class="menu-item">Time Table</li></a>
+                <a href="{% url 'subject' %}"><li class="menu-item">Add Subjects</li></a>
+                <li class="menu-item active">Student Registration</li>
+                <a href="{% url 'timetable' %}"><li class="menu-item">Add Time Table</li></a>
                 <a href="{% url 'logout' %}"><li class="menu-item">Logout</li></a>
             </ul>
         </aside>
         
         <main class="main-content">
             <header class="header">
-                <h2>Student List</h2>
+                <h2>Student Registration</h2>
                 <div class="user-profile">
                     <span>Hi, {{ request.session.full_name }}</span>
                 </div>

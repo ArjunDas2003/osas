@@ -93,3 +93,43 @@ class TimeTable(models.Model):
 
     def __str__(self):
         return f"{self.class_info} - {self.day} - Period {self.period}"
+    
+from django.utils import timezone
+
+class AttendanceSheet(models.Model):
+    class_info = models.ForeignKey(Class, on_delete=models.CASCADE)
+    subject = models.ForeignKey(Subject, on_delete=models.CASCADE)
+    date = models.DateField(default=timezone.now)
+    day = models.CharField(max_length=10, choices=[
+        ("Monday", "Monday"),
+        ("Tuesday", "Tuesday"),
+        ("Wednesday", "Wednesday"),
+        ("Thursday", "Thursday"),
+        ("Friday", "Friday"),
+    ])
+    period_number = models.IntegerField()
+    student = models.ForeignKey(StudentDb, on_delete=models.CASCADE)
+    is_present = models.BooleanField()
+
+    def __str__(self):
+        return f"{self.student.fullname} - {self.subject.code} - {self.date}"
+
+class Attendance(models.Model):
+    student = models.ForeignKey(StudentDb, on_delete=models.CASCADE)
+    subject = models.ForeignKey(Subject, on_delete=models.CASCADE)
+    total_hours = models.IntegerField(default=0)
+    total_present = models.IntegerField(default=0)
+    total_absent = models.IntegerField(default=0)
+
+    def __str__(self):
+        return f"{self.student.fullname} - {self.subject.code}"
+
+class LeavePeriods(models.Model):
+    faculty = models.ForeignKey(FacultyDb, on_delete=models.CASCADE)
+    date = models.DateField()
+    period = models.IntegerField()
+    class_info = models.ForeignKey(Class, on_delete=models.CASCADE, null=True, blank=True)
+    subject = models.ForeignKey(Subject, on_delete=models.CASCADE, null=True, blank=True)
+
+    def __str__(self):
+        return f"{self.faculty.fullname} - Period {self.period} on {self.date}"
